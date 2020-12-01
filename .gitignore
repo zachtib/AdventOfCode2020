@@ -1,0 +1,12 @@
+#IntelliJ IDEA
+.idea/*
+!.idea/runConfigurations
+!.idea/codeStyles
+*.ipr
+*.iws
+*.iml
+out
+
+build/
+.gradle/
+buildSrc/.gradle/*
