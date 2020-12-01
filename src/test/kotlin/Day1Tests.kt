@@ -35,4 +35,32 @@ class Day1Tests {
         val actual = triple.product()
         assertEquals(expected, actual)
     }
+
+    @Test
+    fun `test part1 given`() {
+        val given = listOf(1721, 979, 366, 299, 675, 1456)
+
+        val pairs = given.getPairsSummingTo(2020)
+        assertEquals(1, pairs.size)
+        val pair = pairs.first()
+        assertEquals(1721 to 299, pair)
+
+        val expected = 514579
+        val actual = getPairsProduct(given)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `test part2 given`() {
+        val given = listOf(1721, 979, 366, 299, 675, 1456)
+
+        val triples = given.getTriplesSummingTo(2020)
+        assertEquals(1, triples.size)
+        val triple = triples.first()
+        assertEquals(Triple(979, 366, 675), triple)
+
+        val expected = 241861950
+        val actual = getTriplesProduct(given)
+        assertEquals(expected, actual)
+    }
 }

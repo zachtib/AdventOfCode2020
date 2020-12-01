@@ -28,15 +28,24 @@ fun List<Int>.getTriplesSummingTo(sum: Int): List<Triple<Int, Int, Int>> {
 
 fun Triple<Int, Int, Int>.product() = first * second * third
 
-fun main() {
-    val input = Resources.getLines("day1.txt").map { it.toInt() }
+fun getPairsProduct(input: List<Int>): Int {
     val pairs = input.getPairsSummingTo(2020)
-    for (pair in pairs) {
-        println("${pair.first} * ${pair.second} = ${pair.first * pair.second}")
-    }
+    // Assuming only one potential result
+    val pair = pairs.firstOrNull() ?: return 0
+    println("${pair.first} * ${pair.second} = ${pair.first * pair.second}")
+    return pair.first * pair.second
+}
 
+fun getTriplesProduct(input: List<Int>): Int {
     val triples = input.getTriplesSummingTo(2020)
-    for (triple in triples) {
-        println("${triple.first} * ${triple.second} * ${triple.third} = ${triple.product()}")
-    }
+    // Assuming only one potential result
+    val triple = triples.firstOrNull() ?: return 0
+    println("${triple.first} * ${triple.second} * ${triple.third} = ${triple.product()}")
+    return triple.product()
+}
+
+fun main() {
+    val input = Resources.getInts("day1.txt")
+    println("Part 1 result: ${getPairsProduct(input)}")
+    println("Part 2 result: ${getTriplesProduct(input)}")
 }

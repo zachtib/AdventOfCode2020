@@ -6,4 +6,8 @@ object Resources {
     fun getLines(name: String): List<String> {
         return getText(name)?.lines() ?: listOf()
     }
+
+    fun getInts(name: String): List<Int> {
+        return getLines(name).map { it.toInt() }
+    }
 }
