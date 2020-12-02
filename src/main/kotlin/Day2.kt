@@ -28,7 +28,7 @@ fun countValidPasswordsPart2(list: List<PasswordPolicy>): Int {
 }
 
 fun main() {
-    val input = Resources.getLines("day2.txt").map { it.toPolicy() }
+    val input = Resources.load("day2.txt") { it.toPolicy() }
     println("Number of valid passwords: ${countValidPasswords(input)}")
     println("Number of valid passwords (part 2): ${countValidPasswordsPart2(input)}")
 }
