@@ -11,6 +11,10 @@ object Resources {
         return getLines(name).map { it.toInt() }
     }
 
+    fun getLongs(name: String): List<Long> {
+        return getLines(name).map { it.toLong() }
+    }
+
     fun <R> load(name: String, transform: (String) -> R): List<R> {
         return getLines(name).map(transform)
     }
