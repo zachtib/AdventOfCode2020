@@ -40,14 +40,47 @@ fun indexInServiceBuses(buses: List<Bus>): List<IndexedBus> {
     return result
 }
 
-fun findTimeStampForBuses(buses: List<Bus>): Int {
+fun euclid(a: Long, b: Long): Pair<Long, Long> {
+    var previousRemainder = a
+    var remainder = b
+    var prevS = 1L
+    var s = 0L
+    var prevT = 0L
+    var t = 1L
+
+    while (remainder != 0L) {
+        val quotient = previousRemainder / remainder
+
+        val newRemainder = previousRemainder - quotient * remainder
+        previousRemainder = remainder
+        remainder = newRemainder
+
+        val newS = prevS - quotient * s
+        prevS = s
+        s = newS
+
+        val newT = prevT - quotient * t
+        prevT = t
+        t = newT
+    }
+    return prevS to prevT
+}
+
+fun findTimeStampForBuses(buses: List<Bus>): Long {
     val indexedBuses = indexInServiceBuses(buses)
     val product = indexedBuses.fold(1L) { acc, i -> acc * i.busId }
-    for (bus in indexedBuses) {
-        println("${bus.index}: ${bus.busId}\t${product/bus.busId}")
-    }
 
-    return 0
+    val ys = indexedBuses.map { product / it.busId }
+    val idents = ys.mapIndexed { i, y -> euclid(indexedBuses[i].busId.toLong(), y) }
+    val toSum = idents.mapIndexed { i, pair -> pair.second * ys[i] * -indexedBuses[i].index }
+    var result = toSum.sum()
+    while (result < 0) {
+        result += product
+    }
+    while (result > product) {
+        result -= product
+    }
+    return result
 }
 
 fun main() {
