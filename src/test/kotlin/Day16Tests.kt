@@ -43,4 +43,32 @@ class Day16Tests {
         val actual = calculateScanningErrorRate(sampleInput.rules, sampleInput.otherTickets)
         assertEquals(71, actual)
     }
+
+    private val pt2Sample = """
+        class: 0-1 or 4-19
+        row: 0-5 or 8-19
+        seat: 0-13 or 16-19
+
+        your ticket:
+        11,12,13
+
+        nearby tickets:
+        3,9,18
+        15,1,5
+        5,14,9
+    """.trimIndent()
+
+    @Test
+    fun `test solving`() {
+        val sampleInput = parseInput(pt2Sample)
+        val actual = solveMyTicket(sampleInput.rules, sampleInput.yourTicket, sampleInput.otherTickets.filter {
+            isTicketValid(it, sampleInput.rules)
+        })
+        val expected = mapOf(
+                "class" to 12,
+                "row" to 11,
+                "seat" to 13,
+        )
+        assertEquals(expected, actual)
+    }
 }
