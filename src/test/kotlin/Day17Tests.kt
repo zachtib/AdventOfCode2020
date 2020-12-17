@@ -52,7 +52,7 @@ class Day17Tests {
             ..#
             ###
         """.trimIndent()
-        val cubes = ConwayCubes(input) { x, y -> Point3D(x, y, z = 0) }
+        val cubes = ConwayCubes(input.map2dInputTo { x, y -> Point3D(x, y, z = 0) })
 
         assertTrue(cubes.isActive(Point3D(0, 1, 0)))
         assertFalse(cubes.isActive(Point3D(1, 1, 0)))
@@ -65,7 +65,7 @@ class Day17Tests {
             ..#
             ###
         """.trimIndent()
-        val cubes = ConwayCubes(input) { x, y -> Point3D(x, y, z = 0) }
+        val cubes = ConwayCubes(input.map2dInputTo { x, y -> Point3D(x, y, z = 0) })
         cubes.runCycles(6)
 
         assertEquals(112, cubes.countActive())
@@ -78,7 +78,7 @@ class Day17Tests {
             ..#
             ###
         """.trimIndent()
-        val cubes = ConwayCubes(input) { x, y -> Point4D(x, y, z = 0, w = 0) }
+        val cubes = ConwayCubes(input.map2dInputTo { x, y -> Point4D(x, y, z = 0, w = 0) })
         cubes.runCycles(6)
 
         assertEquals(848, cubes.countActive())

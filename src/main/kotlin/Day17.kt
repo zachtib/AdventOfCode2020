@@ -39,19 +39,8 @@ data class Point4D(val x: Int, val y: Int, val z: Int, val w: Int) : HasNeighbor
     }
 }
 
-class ConwayCubes<T : HasNeighbors<T>>(initialState: String, create: (Int, Int) -> T) {
-    private val activeCubes = mutableSetOf<T>()
-
-    init {
-        val lines = initialState.lines()
-        for (x in lines.indices) {
-            for (y in lines[x].indices) {
-                if (lines[x][y] == '#') {
-                    activeCubes.add(create(x, y))
-                }
-            }
-        }
-    }
+class ConwayCubes<T : HasNeighbors<T>>(initiallyActive: Collection<T>) {
+    private val activeCubes = initiallyActive.toMutableSet()
 
     fun isActive(point: T): Boolean {
         return point in activeCubes
@@ -99,6 +88,19 @@ class ConwayCubes<T : HasNeighbors<T>>(initialState: String, create: (Int, Int) 
     }
 }
 
+fun <T> String.map2dInputTo(create: (Int, Int) -> T): Set<T> {
+    val lines = lines()
+    val results = mutableSetOf<T>()
+    for (x in lines.indices) {
+        for (y in lines[x].indices) {
+            if (lines[x][y] == '#') {
+                results.add(create(x, y))
+            }
+        }
+    }
+    return results
+}
+
 fun main() {
     val initialState = """
         ######.#
@@ -111,11 +113,11 @@ fun main() {
         .###.###
     """.trimIndent()
 
-    val cubes = ConwayCubes(initialState) { x, y -> Point3D(x, y, z = 0) }
+    val cubes = ConwayCubes(initialState.map2dInputTo { x, y -> Point3D(x, y, z = 0) })
     cubes.runCycles(6)
     cubes.countActive().part1Result()
 
-    val cubes4d = ConwayCubes(initialState) { x, y -> Point4D(x, y, z = 0, w = 0) }
+    val cubes4d = ConwayCubes(initialState.map2dInputTo { x, y -> Point4D(x, y, z = 0, w = 0) })
     cubes4d.runCycles(6)
     cubes4d.countActive().part2Result()
 }
