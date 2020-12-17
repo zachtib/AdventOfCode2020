@@ -39,41 +39,38 @@ data class Point4D(val x: Int, val y: Int, val z: Int, val w: Int) : HasNeighbor
     }
 }
 
+fun <T : HasNeighbors<T>> Set<T>.withNeighbors(): Set<T> {
+    return this + this.map { it.neighbors() }.flatten()
+}
+
 class ConwayCubes<T : HasNeighbors<T>>(initiallyActive: Collection<T>) {
-    private val activeCubes = initiallyActive.toMutableSet()
+    private val activeNodes = initiallyActive.toMutableSet()
 
     fun isActive(point: T): Boolean {
-        return point in activeCubes
+        return point in activeNodes
     }
 
     private fun flip(point: T) {
-        if (point in activeCubes) {
-            activeCubes.remove(point)
+        if (point in activeNodes) {
+            activeNodes.remove(point)
         } else {
-            activeCubes.add(point)
+            activeNodes.add(point)
         }
-    }
-
-    private fun allCubes(): Set<T> {
-        return activeCubes + activeCubes.map { it.neighbors() }.flatten()
     }
 
     private fun cycle() {
-        val pointsToFlip = mutableListOf<T>()
-        for (point in allCubes()) {
-            val activeNeighbors = point.neighbors().count { it in activeCubes }
-            if (point in activeCubes) {
+        val initialState: Set<T> = activeNodes.toMutableSet()
+        for (point in activeNodes.withNeighbors()) {
+            val activeNeighbors = point.neighbors().count { it in initialState }
+            if (point in initialState) {
                 if (activeNeighbors !in 2..3) {
-                    pointsToFlip.add(point)
+                    flip(point)
                 }
             } else {
                 if (activeNeighbors == 3) {
-                    pointsToFlip.add(point)
+                    flip(point)
                 }
             }
-        }
-        for (point in pointsToFlip) {
-            flip(point)
         }
     }
 
@@ -84,7 +81,7 @@ class ConwayCubes<T : HasNeighbors<T>>(initiallyActive: Collection<T>) {
     }
 
     fun countActive(): Int {
-        return activeCubes.size
+        return activeNodes.size
     }
 }
 
